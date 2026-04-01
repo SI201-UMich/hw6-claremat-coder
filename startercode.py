@@ -138,6 +138,9 @@ def get_longest_lifespan_breed(cache_file):
         except (KeyError, TypeError):
             continue
 
+        if not isinstance(max_lifespan, (int, float)):
+            continue 
+
         if best_lifespan is None or max_lifespan > best_lifespan:
             best_lifespan = max_lifespan
             best_name = name
@@ -149,7 +152,6 @@ def get_longest_lifespan_breed(cache_file):
         return "No breeds found"
         
     return (best_name, best_lifespan)
-
 
 def get_groups_above_cutoff(cutoff, cache_file):
     """
