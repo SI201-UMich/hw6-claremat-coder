@@ -36,7 +36,11 @@ def load_json(filename):
         A dictionary with the JSON data, OR an empty dictionary {} if the file
         cannot be opened or is not valid JSON.
     """
-    pass
+    try:
+        with open(filename, "r", encoding='utf-8') as f:
+            return json.load(f)
+    except:
+        return {}
 
 
 def create_cache(dictionary, filename):
@@ -51,8 +55,8 @@ def create_cache(dictionary, filename):
     RETURNS:
         None
     """
-    pass
-
+    with open(filename, "w") as f:
+        json.dump(dictionary, f)
 
 def search_breed(breed_id):
     """
@@ -68,8 +72,17 @@ def search_breed(breed_id):
         JSON body as a dict (with a top-level 'data' key on success), OR None if the
         request failed or the response does not represent a successful breed lookup.
     """
-    pass
+    url = f"https://dogapi.dog/api/v2/breeds/{breed_id}"
+    
+    response = requests.get(url)
 
+    if response.status_code == 200:
+        parsed__json_dict = response.json()
+        if parsed__json_dict["data"] is not None:
+            return (parsed__json_dict, url)
+    
+    return None
+    
 
 def update_cache(breed_ids, cache_file):
     """
